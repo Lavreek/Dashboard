@@ -18,6 +18,13 @@ export default class extends Controller {
         // console.log(event.detail.config);
 
         // For instance you can format Y axis
+        event.detail.config.options.plugins = {
+            legend: {
+                position : "right",
+                align : "start"
+            }
+        };
+
         event.detail.config.options.scales = {
             y: {
                 ticks: {

@@ -4,18 +4,9 @@
     width: 100vw;
     height: 450px;
 
-    grid-template-columns: calc(100% - 320px) 320px;
     background: rgba(242, 221, 198, 1);
 }
 
 .dashboard-chart {
 
-}
-
-.dashboard-legends {
-    list-style: none;
-
-    &-item {
-
-    }
 }
