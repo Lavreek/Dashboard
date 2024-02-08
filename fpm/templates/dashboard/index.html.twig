@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello DashboardController!{% endblock %}
+
+{% block body %}
+    <div {{ stimulus_controller('test') }}> test </div>
+    <div class="dashboard-container">
+        {{ render_chart(chart, {
+            'id': 'chart', 'class' : 'dashboard-chart', 'data-controller': 'chart',
+            'style' : 'position: relative; width: 100%; height: 450px;'
+            })
+        }}
+        <ul class="dashboard-legends">
+            <li class="dashboard-legends-item">My First dataset</li>
+            <li class="dashboard-legends-item">My Second dataset</li>
+        </ul>
+    </div>
+{% endblock %}
