@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+
+  dashboard-fpm:
+    container_name: dashboard-fpm
+
+    build:
+      context: .
+      dockerfile: Dockerfile_dashboard-fpm
+
+    networks:
+      - dashboard
+
+    volumes:
+      - ./fpm:/var/www/html/
+
+    ports:
+      - "9000:9000"
+
+  dashboard-host:
+    container_name: dashboard-host
+
+    build:
+      context: .
+      dockerfile: Dockerfile_dashboard-host
+
+    networks:
+      - dashboard
+
+    volumes:
+      - ./fpm/:/var/www/html/
+
+    ports:
+      - "80:80"
+
+  dashboard-database:
+    container_name: dashboard-database
+
+    build:
+      context: .
+      dockerfile: Dockerfile_dashboard-database
+
+    restart: always
+
+    env_file:
+      - .env
+
+    networks:
+      - dashboard
+
+    environment:
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+    command: --wait_timeout=3600
+
+    ports:
+        - "3306:3306"
+
+networks:
+  dashboard:
+    name: dashboard-network
+    driver: bridge
+    external: true
