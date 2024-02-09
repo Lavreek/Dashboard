@@ -1,5 +1,5 @@
 import './bootstrap.js';
-import './controllers/chart_controller';
+
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -9,11 +9,3 @@ import './controllers/chart_controller';
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.scss';
-
-import zoomPlugin from 'chartjs-plugin-zoom';
-
-// register globally for all charts
-document.addEventListener('chartjs:init', function (event) {
-    const Chart = event.detail.Chart;
-    Chart.register(zoomPlugin);
-});

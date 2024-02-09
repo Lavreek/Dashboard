@@ -1,12 +1,18 @@
-.dashboard-container {
-    display: grid;
+.dashboard {
+    &-container {
+        display: grid;
 
-    width: 100vw;
-    height: 450px;
+        width: 100vw;
+        height: 450px;
 
-    background: rgba(242, 221, 198, 1);
-}
+        background: rgba(242, 221, 198, 1);
+    }
 
-.dashboard-chart {
+    &-chart { }
 
+    &-button-group {
+        display: flex;
+        flex-wrap: nowrap;
+        column-gap: 10px;
+    }
 }
