@@ -3,14 +3,12 @@
 {% block title %}Hello DashboardController!{% endblock %}
 
 {% block body %}
-    {{ number }}
-
-    <turbo-frame id="chart-frame">
+{#    <turbo-frame id="chart-frame">#}
         <div class="control-panel" {{ stimulus_controller('control') }}>
             {{ form_start(control_form) }}
             {{ form_end(control_form) }}
         </div>
-    </turbo-frame>
+{#    </turbo-frame>#}
     <div class="dashboard-container" {{ stimulus_controller('chart') }}>
         {{ render_chart(chart, {
             'id' : 'chart', 'class' : 'dashboard-chart', 'data-chart-target' : 'canvas',

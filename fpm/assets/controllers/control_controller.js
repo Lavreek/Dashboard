@@ -3,21 +3,27 @@ import datepicker from 'js-datepicker'
 
 
 export default class extends Controller {
-    initialize() {
-        // const start = datepicker('#control_date-start', { id : 1 })
-        // const end = datepicker('#control_date-end', { id : 1 })
+    static targets = [ 'form' ]
+
+    initialize() { }
+
+    connect() { }
+
+    disconnect() { }
+
+    selectProgram(event) {
+        const selector = document.getElementById('control_program')
+        const form = this.formTarget
+
+        selector.setAttribute('value', event.target.value)
+        form.submit()
     }
 
-    connect() {
-        this.element.addEventListener('submit', this._submitted)
-    }
+    selectDate(event) {
+        const selector = document.getElementById('control_program')
+        const form = this.formTarget
 
-    disconnect() {
-        this.element.removeEventListener('submit', this._submitted)
-    }
-
-    _submitted(event) {
-        // event.preventDefault()
-        console.log('here')
+        selector.removeAttribute('value')
+        form.submit()
     }
 }

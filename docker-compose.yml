@@ -3,7 +3,7 @@ version: '3.8'
 services:
 
   dashboard-fpm:
-    container_name: dashboard-fpm
+    container_name: fpm
 
     build:
       context: .
@@ -19,7 +19,7 @@ services:
       - "9000:9000"
 
   dashboard-host:
-    container_name: dashboard-host
+    container_name: host
 
     build:
       context: .
@@ -35,7 +35,7 @@ services:
       - "80:80"
 
   dashboard-database:
-    container_name: dashboard-database
+    container_name: database
 
     build:
       context: .
@@ -62,6 +62,6 @@ services:
 
 networks:
   dashboard:
-    name: dashboard-network
+    name: connect
     driver: bridge
     external: true
