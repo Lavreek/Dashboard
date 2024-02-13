@@ -23,12 +23,6 @@ export default class extends Controller {
     }
 
     _onPreConnect(event) {
-        // The chart is not yet created
-        // You can access the config that will be passed to "new Chart()"
-        // console.log(event.detail.config);
-
-        // For instance you can format Y axis
-
         event.detail.config.options.plugins = {
             legend : {
                 position : "right",
@@ -59,11 +53,6 @@ export default class extends Controller {
     }
 
     _onConnect(event) {
-        // The chart was just created
-        // console.log(event.detail.chart); // You can access the chart instance using the event details
-
-        // For instance you can listen to additional events
-
         document.dashboard = event.detail.chart
 
         event.detail.chart.options.onHover = (mouseEvent) => {

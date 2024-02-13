@@ -24,12 +24,12 @@ class MailsRepository extends ServiceEntityRepository
     /**
      * @return Mails[] Returns an array of Mails objects
      */
-    public function findBetween(string $start, string $end) : array
+    public function findBetween(string $start, string $end, int $site_id, int $limit = 10) : array
     {
         return $this->createQueryBuilder('m')
             ->andWhere("m.date BETWEEN '$start' AND '$end'")
-//            ->orderBy('CONVERT(datetime, m.date, 103)', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere("m.site_id = $site_id")
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult()
         ;

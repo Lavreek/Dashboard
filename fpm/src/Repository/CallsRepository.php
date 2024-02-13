@@ -21,6 +21,20 @@ class CallsRepository extends ServiceEntityRepository
         parent::__construct($registry, Calls::class);
     }
 
+    /**
+     * @return Calls[] Returns an array of Calls objects
+     */
+    public function findBetween(string $start, string $end, int $site_id, int $limit = 10) : array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere("c.date BETWEEN '$start' AND '$end'")
+            ->andWhere("c.site_id = $site_id")
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 //    /**
 //     * @return Calls[] Returns an array of Calls objects
 //     */

@@ -3,12 +3,14 @@
 namespace App\Form;
 
 use App\Entity\Site;
+use SebastianBergmann\CodeCoverage\Report\Text;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,21 +20,31 @@ class ControlType extends AbstractType
     {
         $builder
             ->add('site', EntityType::class, [
+                'label' => false,
                 'class' => Site::class,
                 'choice_label' => 'name',
+                'attr' => [
+                    'data-action' => 'change->control#selectSite',
+                ],
             ])
-            ->add('date-start', DateType::class, [
+            ->add('dateStart', DateType::class, [
+                'row_attr' => [
+                    'class' => 'control-group'
+                ],
+                'label' => 'Дата начала отбора',
                 'required' => false,
                 'attr' => [
                     'data-action' => 'change->control#selectDate',
-                    'value' => date('Y-m-d', strtotime('-7 days'))
                 ]
             ])
-            ->add('date-end', DateType::class, [
+            ->add('dateEnd', DateType::class, [
+                'row_attr' => [
+                    'class' => 'control-group'
+                ],
+                'label' => 'Дата конца отбора',
                 'required' => false,
                 'attr' => [
                     'data-action' => 'change->control#selectDate',
-                    'value' => date('Y-m-d', strtotime('+1 days'))
                 ]
             ])
             ->add('today', ButtonType::class, [
@@ -42,28 +54,29 @@ class ControlType extends AbstractType
                     'value' => 0
                 ]
             ])
-            ->add('yesterday', SubmitType::class, [
+            ->add('yesterday', ButtonType::class, [
                 'label' => 'Вчера',
                 'attr' => [
                     'data-action' => 'click->control#selectProgram',
                     'value' => -1
                 ]
             ])
-            ->add('seven-days', SubmitType::class, [
+            ->add('sevenDays', ButtonType::class, [
                 'label' => 'За 7 дней',
                 'attr' => [
                     'data-action' => 'click->control#selectProgram',
                     'value' => -7
                 ]
             ])
-            ->add('thirty-days', SubmitType::class, [
+            ->add('thirtyDays', ButtonType::class, [
                 'label' => 'За 30 дней',
                 'attr' => [
                     'data-action' => 'click->control#selectProgram',
                     'value' => -30
                 ]
             ])
-            ->add('this-month', SubmitType::class, [
+            ->add('thisMonth', ButtonType::class, [
+                'label' => 'В этом месяце',
                 'attr' => [
                     'data-action' => 'click->control#selectProgram',
                     'value' => 30
@@ -80,7 +93,6 @@ class ControlType extends AbstractType
                 'data-control-target' => 'form',
             ],
             'method' => 'POST'
-            // Configure your form options here
         ]);
     }
 }

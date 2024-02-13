@@ -1,15 +1,18 @@
 import { Controller } from '@hotwired/stimulus';
-import datepicker from 'js-datepicker'
-
 
 export default class extends Controller {
-    static targets = [ 'form' ]
+    static targets = [ 'form', 'submit' ]
 
     initialize() { }
 
-    connect() { }
+    connect() {    }
 
-    disconnect() { }
+    disconnect() {    }
+
+    selectSite() {
+        const form = this.formTarget
+        form.submit()
+    }
 
     selectProgram(event) {
         const selector = document.getElementById('control_program')
