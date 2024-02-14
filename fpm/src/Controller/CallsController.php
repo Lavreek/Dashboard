@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Calls;
+use App\Form\Calls\CallsCreateType;
 use App\Form\Calls\CreateType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,7 +23,7 @@ class CallsController extends AbstractController
     #[Route('/calls/create', name: 'app_calls_create')]
     public function create(Request $request, ManagerRegistry $managerRegistry): Response
     {
-        $form = $this->createForm(CreateType::class, null, [
+        $form = $this->createForm(CallsCreateType::class, null, [
             'method' => 'POST'
         ]);
         $form->handleRequest($request);

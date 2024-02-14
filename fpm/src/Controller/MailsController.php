@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Mails;
-use App\Form\Mails\CreateType;
+use App\Form\Mails\MailsCreateType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +22,7 @@ class MailsController extends AbstractController
     #[Route('/mails/create', name: 'app_mails_create')]
     public function create(Request $request, ManagerRegistry $managerRegistry): Response
     {
-        $form = $this->createForm(CreateType::class, null, [
+        $form = $this->createForm(MailsCreateType::class, null, [
             'method' => 'POST'
         ]);
         $form->handleRequest($request);

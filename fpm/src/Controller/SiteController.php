@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Site;
-use App\Form\Site\CreateType;
+use App\Form\Site\SiteCreateType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +22,7 @@ class SiteController extends AbstractController
     #[Route('/site/create', name: 'app_site_create')]
     public function create(Request $request, ManagerRegistry $managerRegistry): Response
     {
-        $form = $this->createForm(CreateType::class, null, [
+        $form = $this->createForm(SiteCreateType::class, null, [
             'method' => 'POST'
         ]);
         $form->handleRequest($request);

@@ -10,8 +10,8 @@
         {{ form_row(control_form.dateEnd, { 'attr' : {'value' : date_end } }) }}
         {{ form_end(control_form) }}
     </div>
-    <div class="dashboard">
-        <div class="dashboard-container" {{ stimulus_controller('chart') }}>
+    <div class="dashboard" {{ stimulus_controller('chart') }}>
+        <div class="dashboard-container">
             {{ render_chart(chart, {
                 'id' : 'chart', 'class' : 'dashboard-chart', 'data-chart-target' : 'canvas',
                 'style' : 'position: relative; width: 100%; height: 450px;'

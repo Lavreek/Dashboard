@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Form\Mails;
+namespace App\Form\Calls;
 
-use App\Entity\Mails;
+use App\Entity\Calls;
 use App\Entity\Site;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -11,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CreateType extends AbstractType
+class CallsCreateType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -31,7 +31,7 @@ class CreateType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Mails::class,
+            'data_class' => Calls::class,
         ]);
     }
 }
