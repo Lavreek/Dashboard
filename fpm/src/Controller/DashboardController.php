@@ -6,9 +6,12 @@ use App\Entity\Calls;
 use App\Entity\Mails;
 use App\Entity\Site;
 use App\Form\ControlType;
+use App\Form\FileUploadType;
 use App\Handler\ChartHandler;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -103,15 +106,15 @@ class DashboardController extends AbstractController
 
         $mailsData = [
             'label' => "Письма",
-            'backgroundColor' => 'rgb(255, 99, 132)',
-            'borderColor' => 'rgb(255, 99, 132)',
+            'backgroundColor' => 'rgb(8, 120, 180)',
+            'borderColor' => 'rgb(8, 120, 180)',
             'data' => [],
         ];
 
         $callsData = [
             'label' => "Звонки",
-            'backgroundColor' => 'rgb(255, 132, 99)',
-            'borderColor' => 'rgb(255, 132, 99)',
+            'backgroundColor' => 'rgb(177, 47, 175)',
+            'borderColor' => 'rgb(177, 47, 175)',
             'data' => [],
         ];
 
@@ -170,5 +173,104 @@ class DashboardController extends AbstractController
         $end_formated = date('Y-m-d H:i:s', strtotime($end));
 
         return $manager->getRepository($class)->findBetween( $start_formated, $end_formated, $id, $limit );
+    }
+
+    #[Route('/upload', name: 'app_upload')]
+    public function upload(Request $request, ManagerRegistry $managerRegistry): Response
+    {
+        $upload = $this->createForm(FileUploadType::class);
+        $upload->handleRequest($request);
+
+        if ($upload->isSubmitted()) {
+            $task = $upload->getData();
+            $taskFile = $task['file'];
+            $taskChoice = $task['choice'];
+
+            /** @var \SplFileObject $file */
+            $file = $taskFile->openFile();
+
+            $delimiter = $this->getDelimiter($file);
+
+            $rowPosition = 0;
+            $sites = [];
+            $sitesRepository = $managerRegistry->getRepository(Site::class);
+            $dateTag = 'date';
+
+            if (!is_null($delimiter)) {
+                while ($row = $file->fgetcsv($delimiter)) {
+                    if ($rowPosition === 0) {
+
+                        foreach ($row as $position => $column) {
+                            $site = $sitesRepository->findOneBy(['name' => $column]);
+
+                            if (!is_null($site)) {
+                                $sites[$position] = $site;
+                            }
+                        }
+
+                    } else {
+
+                        $class = "";
+                        $repository = "";
+
+                        switch ($taskChoice) {
+                            case 'mails' :
+                            {
+                                $class = new Mails();
+                                $repository = $managerRegistry->getRepository(Mails::class);
+                                break;
+                            }
+                            case 'calls' :
+                            {
+                                $class = new Calls();
+                                $repository = $managerRegistry->getRepository(Calls::class);
+                                break;
+                            }
+                        }
+
+                        foreach ($row as $position => $column) {
+                            $date = new \DateTime(date(self::short_format, strtotime($row[0])));
+
+                            if (isset($sites[$position])) {
+                                $item = $repository->findOneBy(['date' => $date, 'site_id' => $sites[$position]]);
+
+                                if (is_null($item)) {
+                                    $item = $class;
+                                }
+
+                                $item->setSiteId($sites[$position]);
+                                $item->setCount($column);
+                                $item->setDate($date);
+
+                                $manager = $managerRegistry->getManager();
+                                $manager->persist($item);
+                            }
+                        }
+
+                        $manager->flush();
+                    }
+
+                    $rowPosition++;
+                }
+            }
+        }
+
+        return $this->render('dashboard/upload.html.twig', [
+            'form' => $upload
+        ]);
+    }
+
+    private function getDelimiter(\SplFileObject $file)
+    {
+        $fileSample = $file->fread(16);
+        $file->rewind();
+
+        preg_match_all('#date([\;|\,])#', $fileSample, $match);
+
+        if (isset($match[1][0])) {
+            return $match[1][0];
+        }
+
+        return null;
     }
 }

@@ -1,3 +1,6 @@
+$mails-colour : #0878b4;
+$calls-colour : #b12faf;
+
 body {
     margin: 0;
     background: rgba(253, 244, 227, 1);
@@ -26,4 +29,12 @@ input, button, select {
 button:hover {
     background: rgba(242, 221, 198, 1);
     border: 1px solid rgba(0, 0, 0, .5);
+}
+
+.mails-text {
+    color: $mails-colour;
+}
+
+.calls-text {
+    color: $calls-colour;
 }
